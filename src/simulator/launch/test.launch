@@ -1,0 +1,44 @@
+<launch>
+    <node name="odometry_manager_node" pkg="odom_manager" type="odometry_manager_node" output="screen" />
+        <arg name="pi" value="3.141592653589793" />
+        <arg name="pi_4" value="$(eval 4*arg('pi') / 4.0)" />
+        <arg name="1pi_4" value="$(eval 1*arg('pi') / 4.0)" />
+        <arg name="2pi_4" value="$(eval 2*arg('pi') / 4.0)" />
+        <arg name="3pi_4" value="$(eval 3 * arg('pi') / 4.0)" />
+        <arg name="neg_1pi_4" value="$(eval -1 * arg('pi') / 4.0)" />
+        <arg name="neg_3pi_4" value="$(eval -3 * arg('pi') / 4.0)" />
+        <!-- agv1 -->
+        <param name="agv1/x_init" value="10.0" />
+        <param name="agv1/y_init" value="10.0" />
+        <param name="agv1/z_init" value="0.3" />
+        <param name="agv1/theta_init" value="$(arg pi_4)" />
+
+
+    <node pkg="pcd_publisher" type="pcd_publisher_node" name="pcd_publisher" output="screen" />
+        <param name="pcd_file" value="$(find pcd_publisher)/pcd_file/output.pcd" />
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find simulator)/rviz/video.rviz" />
+
+    <node name="map_builder" pkg="map_builder" type="map_builder_node" output="screen" >
+      <param name="size_x" value="73" />
+      <param name="size_y" value="61" />
+      <param name="resolution" value="1" />
+      <param name="penalty" value="2" />
+    </node>
+
+    <node name="path_finder_node" pkg="path_finder" type="path_finder_node" output="screen" />
+
+    <node name="primitive_planner_node" pkg="local_planner" type="primitive_planner_node" output="screen" >
+      <param name="path_file" value="$(find local_planner)/paths/paths.txt" />
+      <param name="rotation_angle_deg" value="-90.0" />
+      <param name="distance_tolerance" value="0.5" />
+    </node>
+
+    <node name="trajectory_tracker_node" pkg="trajectory_tracker" type="trajectory_tracker_node" output="screen" />
+    
+</launch>
+
+
+
+
+
