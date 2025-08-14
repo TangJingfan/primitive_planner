@@ -26,5 +26,7 @@ include_directories(
 add_definitions(${PCL_DEFINITIONS})
 
 add_executable(primitive_planner_node src/planner.cpp src/planner_node.cpp)
+
 target_link_libraries(primitive_planner_node ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+
 add_dependencies(primitive_planner_node ${catkin_EXPORTED_TARGETS})

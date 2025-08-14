@@ -29,6 +29,7 @@ include_directories(
 )
 
 link_directories(${PCL_LIBRARY_DIRS} include)
+
 add_definitions(${PCL_DEFINITIONS})
 
 add_executable(map_builder_node 

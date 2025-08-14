@@ -1,7 +1,6 @@
 #include "trajectory_tracker.h"
 #include <boost/bind.hpp>
 #include <cmath>
-#include <functional>
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
@@ -9,9 +8,7 @@
 #include <nav_msgs/Path.h>
 #include <ros/ros.h>
 #include <std_msgs/String.h>
-#include <string>
 #include <tf/transform_datatypes.h>
-#include <vector>
 
 TrajectoryTracker::TrajectoryTracker(ros::NodeHandle &nh_) : nh(nh_) {
   robot_names = {"agv1"};
@@ -34,7 +31,6 @@ TrajectoryTracker::TrajectoryTracker(ros::NodeHandle &nh_) : nh(nh_) {
         "/" + name + "/adjust_pose", 1,
         boost::bind(&TrajectoryTracker::adjust_callback, this,
                     boost::placeholders::_1, name));
-   
   }
 }
 
@@ -85,8 +81,8 @@ void TrajectoryTracker::odom_callback(const nav_msgs::Odometry::ConstPtr &msg,
     distance = sqrt(dx * dx + dy * dy);
   } else if (distance < r.tolerance &&
              idx == static_cast<int>(r.current_path.poses.size()) - 1) {
-    //r.send_cmd_vel(0, 0);
-    
+    // r.send_cmd_vel(0, 0);
+
     return;
   }
 
@@ -120,7 +116,6 @@ void TrajectoryTracker::odom_callback(const nav_msgs::Odometry::ConstPtr &msg,
   if (fabs(error_angle) >= M_PI / 2) {
     linear_vel = 0;
   }
-
 
   // 限制最大速度
   if (linear_vel > r.max_linear_velocity)
